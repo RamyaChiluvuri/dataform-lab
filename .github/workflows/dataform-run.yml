@@ -1,0 +1,39 @@
+name: Run Dataform on push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-dataform:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Trigger Dataform run
+        run: |
+          PROJECT_ID="jcpenny-mlops-poc"
+          REGION="us-east1"
+          REPO_ID="tf-dataform-repo"
+
+          ACCESS_TOKEN=$(gcloud auth print-access-token)
+
+          curl -X POST \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            -H "Content-Type: application/json" \
+            "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowInvocations" \
+            -d '{}'
