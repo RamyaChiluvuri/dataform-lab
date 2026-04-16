@@ -1,0 +1,7 @@
+config {
+  type: "table"
+}
+
+select
+  1 as id,
+  "pipeline test" as source
