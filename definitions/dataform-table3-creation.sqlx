@@ -1,0 +1,8 @@
+config {
+  type: "table",
+  name: "sample_table"
+}
+
+SELECT
+  1 AS id,
+  "Hello Dataform" AS message
