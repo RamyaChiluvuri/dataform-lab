@@ -30,13 +30,15 @@ jobs:
           REGION="us-east1"
           REPO_ID="tf-dataform-repo"
           WORKFLOW_CONFIG_ID="prod-workflow"
-      
           ACCESS_TOKEN=$(gcloud auth print-access-token)
-      
+    
           curl -X POST \
             -H "Authorization: Bearer ${ACCESS_TOKEN}" \
             -H "Content-Type: application/json" \
             "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowInvocations" \
-            -d "{
-              \"workflowConfig\": \"projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowConfigs/${WORKFLOW_CONFIG_ID}\"
-            }"
+            -d '{
+              "workflowConfig": "projects/'"$PROJECT_ID"'/locations/'"$REGION"'/repositories/'"$REPO_ID"'/workflowConfigs/'"$WORKFLOW_CONFIG_ID"'",
+              "invocationConfig": {
+                "transitiveDependenciesIncluded": true
+              }
+            }'
