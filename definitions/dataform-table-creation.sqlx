@@ -1,0 +1,8 @@
+config {
+  type: "table"
+}
+
+select
+  1 as id,
+  "ramya test" as source,
+  current_timestamp() as loaded_at
