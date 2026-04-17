@@ -37,6 +37,9 @@ jobs:
             -H "Content-Type: application/json" \
             "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowInvocations" \
             -d '{
+              "compilationConfig": {
+                "gitCommitish": "main"
+              },
               "invocationConfig": {
                 "transitiveDependenciesIncluded": true
               }
