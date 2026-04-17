@@ -24,23 +24,47 @@ jobs:
       - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Trigger Dataform (compile + run)
-        run: |
-          PROJECT_ID="jcpenny-mlops-poc"
-          REGION="us-east1"
-          REPO_ID="tf-dataform-repo"
-      
-          ACCESS_TOKEN=$(gcloud auth print-access-token)
-      
-          curl -X POST \
-            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-            -H "Content-Type: application/json" \
-            "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowInvocations" \
-            -d '{
-              "compilationConfig": {
-                "gitCommitish": "main"
-              },
-              "invocationConfig": {
-                "transitiveDependenciesIncluded": true
-              }
-            }'
+      - name: Compile and run Dataform
+      run: |
+        set -e
+    
+        PROJECT_ID="jcpenny-mlops-poc"
+        REGION="us-east1"
+        REPO_ID="tf-dataform-repo"
+        TARGET_PROJECT_ID="solution-kit-8"
+        BRANCH_NAME="main"
+    
+        ACCESS_TOKEN="$(gcloud auth print-access-token)"
+    
+        echo "Step 1: Create compilation result"
+        COMPILATION_RESPONSE=$(curl -s -X POST \
+          -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+          -H "Content-Type: application/json" \
+          "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/compilationResults" \
+          -d "{
+            \"gitCommitish\": \"${BRANCH_NAME}\",
+            \"codeCompilationConfig\": {
+              \"defaultDatabase\": \"${TARGET_PROJECT_ID}\"
+            }
+          }")
+    
+        echo "$COMPILATION_RESPONSE"
+    
+        COMPILATION_RESULT=$(echo "$COMPILATION_RESPONSE" | jq -r '.name')
+    
+        if [ -z "$COMPILATION_RESULT" ] || [ "$COMPILATION_RESULT" = "null" ]; then
+          echo "Failed to create compilation result"
+          exit 1
+        fi
+    
+        echo "Step 2: Create workflow invocation"
+        curl -s -X POST \
+          -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+          -H "Content-Type: application/json" \
+          "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowInvocations" \
+          -d "{
+            \"compilationResult\": \"${COMPILATION_RESULT}\",
+            \"invocationConfig\": {
+              \"transitiveDependenciesIncluded\": true
+            }
+          }"
