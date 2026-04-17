@@ -29,14 +29,28 @@ jobs:
           PROJECT_ID="jcpenny-mlops-poc"
           REGION="us-east1"
           REPO_ID="tf-dataform-repo"
+          RELEASE_CONFIG_ID="prod-release"
           WORKFLOW_CONFIG_ID="prod-workflow"
           
           ACCESS_TOKEN=$(gcloud auth print-access-token)
     
+          echo "Step 1: Compile release"
+
           curl -X POST \
-          -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-          -H "Content-Type: application/json" \
-          "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowInvocations" \
-          -d "{
-            \"workflowConfig\": \"projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowConfigs/${WORKFLOW_CONFIG_ID}\"
-          }"
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            -H "Content-Type: application/json" \
+            "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/releaseConfigs/${RELEASE_CONFIG_ID}:compile" \
+            -d '{}'
+      
+          echo "Waiting for compilation..."
+          sleep 10
+      
+          echo "Step 2: Run workflow"
+      
+          curl -X POST \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            -H "Content-Type: application/json" \
+            "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowInvocations" \
+            -d "{
+              \"workflowConfig\": \"projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowConfigs/${WORKFLOW_CONFIG_ID}\"
+            }"
