@@ -24,16 +24,19 @@ jobs:
       - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Trigger Dataform run
+      - name: Trigger Dataform workflow config
         run: |
           PROJECT_ID="jcpenny-mlops-poc"
           REGION="us-east1"
           REPO_ID="tf-dataform-repo"
-
+          WORKFLOW_CONFIG_ID="dev-workflow"
+      
           ACCESS_TOKEN=$(gcloud auth print-access-token)
-
+      
           curl -X POST \
             -H "Authorization: Bearer ${ACCESS_TOKEN}" \
             -H "Content-Type: application/json" \
             "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowInvocations" \
-            -d '{}'
+            -d "{
+              \"workflowConfig\": \"projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowConfigs/${WORKFLOW_CONFIG_ID}\"
+            }"
