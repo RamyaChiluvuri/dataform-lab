@@ -70,6 +70,7 @@ jobs:
             -d "{
               \"compilationResult\": \"${COMPILATION_RESULT}\",
               \"invocationConfig\": {
+                \"includedTags\": ["finance"],
                 \"transitiveDependenciesIncluded\": true
               }
             }"
