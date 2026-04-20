@@ -1,6 +1,5 @@
 config {
   type: "table",
-  name: "sample_table"
 }
 
 SELECT
