@@ -5,4 +5,4 @@ config {
 
 SELECT
   1 AS id,
-  "Hello Dataform" AS message
+  "Hello Ramya" AS message
