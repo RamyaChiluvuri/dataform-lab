@@ -1,8 +1,0 @@
-config {
-  type: "table",
-  tags: ["finance"]
-}
-
-SELECT
-  1 AS id,
-  "Hello Ramya" AS message
