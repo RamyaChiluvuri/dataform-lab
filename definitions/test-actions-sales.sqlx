@@ -1,0 +1,6 @@
+config {
+  type: "table",
+  tags: ["sales"]
+}
+
+select 2 as id
