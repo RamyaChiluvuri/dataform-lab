@@ -1,8 +1,0 @@
-config {
-  type: "table"
-  tags: ["finance"]
-}
-
-SELECT
-  1 AS id,
-  "Ramya" AS name
