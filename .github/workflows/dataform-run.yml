@@ -68,9 +68,10 @@ jobs:
             -H "Content-Type: application/json" \
             "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowInvocations" \
             -d "{
-              \"compilationResult\": \"${COMPILATION_RESULT}\",
-              \"invocationConfig\": {
-                \"includedTags\": ["finance"],
-                \"transitiveDependenciesIncluded\": true
-              }
-            }"
+            \"compilationResult\": \"${COMPILATION_RESULT}\",
+            \"invocationConfig\": {
+              \"includedTags\": [\"finance\"],
+              \"transitiveDependenciesIncluded\": true,
+              \"serviceAccount\": \"${DATAFORM_RUNNER_SA}\"
+            }
+          }"
