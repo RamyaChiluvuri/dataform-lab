@@ -1,0 +1,6 @@
+config {
+  type: "table",
+  tags: ["finance"]
+}
+
+select 1 as id
