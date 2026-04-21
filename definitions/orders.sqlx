@@ -1,0 +1,7 @@
+config {
+  type: "table"
+}
+
+select
+  101 as order_id,
+  1 as customer_id
