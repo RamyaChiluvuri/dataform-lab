@@ -1,0 +1,7 @@
+config {
+  type: "table"
+}
+
+select
+  1 as customer_id,
+  "Ramya" as name
