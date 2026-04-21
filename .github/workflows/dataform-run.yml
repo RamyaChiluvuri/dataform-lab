@@ -3,7 +3,7 @@ name: Run Dataform on push
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
   run-dataform:
@@ -34,7 +34,7 @@ jobs:
           PROJECT_ID="jcpenny-mlops-poc"
           REGION="us-east1"
           REPO_ID="tf-dataform-repo"
-          TARGET_PROJECT_ID="solution-kit-8-372403"
+          TARGET_PROJECT_ID="jcpenny-mlops-poc"
           BRANCH_NAME="main"
 
           ACCESS_TOKEN=$(gcloud auth print-access-token)
