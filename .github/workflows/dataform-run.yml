@@ -35,7 +35,7 @@ jobs:
           REGION="us-east1"
           REPO_ID="tf-dataform-repo"
           TARGET_PROJECT_ID="jcpenny-mlops-poc"
-          BRANCH_NAME="main"
+          BRANCH_NAME="dev"
 
           ACCESS_TOKEN=$(gcloud auth print-access-token)
 
