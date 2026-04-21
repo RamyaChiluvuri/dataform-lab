@@ -1,0 +1,7 @@
+config {
+  type: "table"
+}
+
+select
+  5001 as payment_id,
+  101 as order_id
