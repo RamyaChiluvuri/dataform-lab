@@ -67,11 +67,18 @@ jobs:
             -H "Authorization: Bearer ${ACCESS_TOKEN}" \
             -H "Content-Type: application/json" \
             "https://dataform.googleapis.com/v1beta1/projects/${PROJECT_ID}/locations/${REGION}/repositories/${REPO_ID}/workflowInvocations" \
-            -d "{
-            \"compilationResult\": \"${COMPILATION_RESULT}\",
-            \"invocationConfig\": {
-              \"includedTags\": [\"finance\"],
-              \"transitiveDependenciesIncluded\": true,
-              \"serviceAccount\": \"${DATAFORM_RUNNER_SA}\"
-            }
-          }"
+             -d "{
+                \"compilationResult\": \"${COMPILATION_RESULT}\",
+                \"invocationConfig\": {
+                  \"includedTargets\": [
+                    {
+                      \"database\": \"${TARGET_PROJECT_ID}\",
+                      \"schema\": \"dataform\",
+                      \"name\": \"orders\"
+                    }
+                  ],
+                   \"includedTags\": [\"finance\"],
+                  \"transitiveDependenciesIncluded\": true,
+                  \"serviceAccount\": \"${DATAFORM_RUNNER_SA}\"
+                }
+              }"
