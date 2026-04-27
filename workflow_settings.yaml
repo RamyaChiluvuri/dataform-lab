@@ -1,4 +1,0 @@
-defaultProject: jcpenny-mlops-poc
-defaultDataset: dataform
-defaultAssertionDataset: dataform_assertions
-dataformCoreVersion: 3.0.42
